@@ -89,10 +89,12 @@ async def on_message(message):
         if message.content[:2] == '!t':
             if(str(message.content[3:].lower()) == getAnswerTo(getCurrentQuestion()).lower()):
                 response = sender + " got it! :partying_face: :partying_face: :partying_face: "
+                message.react("✅")
                 QuestionAnswered()
             else:
                 if(tellWhenWrong):
                     response = "That is not the answer, " + sender +" :frowning:"
+                    message.react("❌")
             
             await message.channel.send(response)
         elif message.content == "!tc":
