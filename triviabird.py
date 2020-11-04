@@ -6,6 +6,8 @@ from triviatools import generateQuestions
 
 questions = generateQuestions(50)
 
+tellWhenWrong = True
+
 def setNewQuestion():
     global currentQuestion
     currentQuestion = getNewQuestion()
@@ -57,11 +59,16 @@ async def on_message(message):
         return
 
     if message.content == '!t help':
-        response = "!tr - generate a new question\n!t [answer] - answer question\n!tc - view current question\n!tq [question]:[answer] - add new question to the bot"
+        response = "!tr - generate a new question\n!t [answer] - answer question\n!tc - view current question\n!tq [question]:[answer] - add new question to the bot\n!tw - toggle wrong message on/off"
         await message.channel.send(response)
     elif message.content[:3] == '!tr':
         setNewQuestion()
         response = "*"+ getCurrentQuestion() + "*" + "\n\n(type !t [answer] to answer)"
+        await message.channel.send(response)
+    elif message.content == "!tw":
+        global tellWhenWrong
+        tellWhenWrong = not tellWhenWrong
+        response = "Wrong message is now set to " + str(tellWhenWrong).lower()
         await message.channel.send(response)
     elif message.content[:3] == '!tq':
         m = message.content.split(":")
@@ -75,11 +82,17 @@ async def on_message(message):
         await message.channel.send(response)
     elif(getCurrentQuestion() != ""):
         sender = message.author.name
+
         print(message.content)
 
-        if message.content[:2] == '!t' and message.content[3:].lower() == getAnswerTo(getCurrentQuestion()).lower():
-            response = sender + " got it!"
-            QuestionAnswered()
+        if message.content[:2] == '!t':
+            if(message.content[3:].lower() == getAnswerTo(getCurrentQuestion()).lower()):
+                response = sender + " got it!"
+                QuestionAnswered()
+            else:
+                if(tellWhenWrong):
+                    response = "That is not the answer, " + sender
+            
             await message.channel.send(response)
         elif message.content == "!tc":
             response = "The current question is: *" + getCurrentQuestion() + "*"
