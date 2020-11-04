@@ -64,7 +64,7 @@ async def on_message(message):
         await message.channel.send(response)
     elif message.content[:3] == '!tr':
         setNewQuestion()
-        response = "*"+ getCurrentQuestion() + "*" + "\n\n(type !t [answer] to answer)"
+        response = ":exclamation: TRIVIA: *"+ getCurrentQuestion() + "*" + "\n\n(type !t [answer] to answer)"
         await message.channel.send(response)
     elif message.content == "!tw":
         global tellWhenWrong
