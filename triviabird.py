@@ -4,6 +4,7 @@ import discord
 from dotenv import load_dotenv
 from triviatools import generateQuestions
 
+#number of questions to preload from spreadsheet, set to less if you want to encounter more player added questions
 questions = generateQuestions(50)
 
 tellWhenWrong = True
@@ -86,7 +87,7 @@ async def on_message(message):
         print(message.content)
 
         if message.content[:2] == '!t':
-            if(message.content[3:].lower() == getAnswerTo(getCurrentQuestion()).lower()):
+            if(str(message.content[3:].lower()) == getAnswerTo(getCurrentQuestion()).lower()):
                 response = sender + " got it!"
                 QuestionAnswered()
             else:
