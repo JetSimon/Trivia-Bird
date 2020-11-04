@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from triviatools import generateQuestions
 
 #number of questions to preload from spreadsheet, set to less if you want to encounter more player added questions
-questions = generateQuestions(50)
+questions = generateQuestions(500)
 
 tellWhenWrong = True
 
@@ -79,7 +79,7 @@ async def on_message(message):
             AddQuestion(q,a)
             response = "Set new question!\nQ: " + q + "\nA: " + a
         else:
-            response = "Question not set, please check formatting"
+            response = ":warning: Question not set, please check formatting"
         await message.channel.send(response)
     elif(getCurrentQuestion() != ""):
         sender = message.author.name
@@ -88,11 +88,11 @@ async def on_message(message):
 
         if message.content[:2] == '!t':
             if(str(message.content[3:].lower()) == getAnswerTo(getCurrentQuestion()).lower()):
-                response = sender + " got it!"
+                response = sender + " got it! :partying_face: :partying_face: :partying_face: "
                 QuestionAnswered()
             else:
                 if(tellWhenWrong):
-                    response = "That is not the answer, " + sender
+                    response = "That is not the answer, " + sender +" :frowning:"
             
             await message.channel.send(response)
         elif message.content == "!tc":
@@ -101,7 +101,7 @@ async def on_message(message):
     else:
         if random.randint(0,50) == 25:
             setNewQuestion()
-            response = "*"+ getCurrentQuestion() + "*" + "\n\n(type !t [answer] to answer)"
+            response = ":exclamation: TRIVIA: *"+ getCurrentQuestion() + "*" + "\n\n(type !t [answer] to answer)"
             await message.channel.send(response)
 
 
