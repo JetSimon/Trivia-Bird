@@ -62,7 +62,7 @@ async def on_message(message):
     if message.content == '!t help':
         response = "!tr - generate a new question\n!t [answer] - answer question\n!tc - view current question\n!tq [question]:[answer] - add new question to the bot\n!tw - toggle wrong message on/off"
         await message.channel.send(response)
-    elif message.content[:3] == '!tr':
+    elif message.content == '!tr':
         setNewQuestion()
         response = ":exclamation: TRIVIA: *"+ getCurrentQuestion() + "*" + "\n\n(type !t [answer] to answer)"
         await message.channel.send(response)
