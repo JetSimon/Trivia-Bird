@@ -134,6 +134,7 @@ async def on_message(message):
             return
 
         if message.content[:2] == '!t':
+            response = ""
             if(str(message.content[3:]).lower() == getAnswerTo(getCurrentQuestion()).lower()):
                 response = sender + " got it! :partying_face: :partying_face: :partying_face: "
                 r="✅"
@@ -152,8 +153,6 @@ async def on_message(message):
             else:
                 if(tellWhenWrong):
                     response = "That is not the answer, " + sender +" :frowning:"
-                else:
-                    response = ""
                 r = "❌"
                     
             await message.add_reaction(emoji=r)
