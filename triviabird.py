@@ -156,7 +156,7 @@ async def on_message(message):
                 r = "❌"
                     
             await message.add_reaction(emoji=r)
-            if(respose != ""):
+            if(response != ""):
                 await message.channel.send(response)
         
     else:
