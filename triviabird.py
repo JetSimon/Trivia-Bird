@@ -152,10 +152,13 @@ async def on_message(message):
             else:
                 if(tellWhenWrong):
                     response = "That is not the answer, " + sender +" :frowning:"
+                else:
+                    response = ""
                 r = "❌"
                     
             await message.add_reaction(emoji=r)
-            await message.channel.send(response)
+            if(respose != ""):
+                await message.channel.send(response)
         
     else:
         if random.randint(0,50) == 25:
