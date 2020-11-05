@@ -77,7 +77,7 @@ async def on_message(message):
         return
 
     if message.content == '!t help':
-        response = "!tr - generate a new question\n!t [answer] - answer question\n!tc - view current question\n!tq [question]:[answer] - add new question to the bot\n!tw - toggle wrong message on/off"
+        response = "!tr - generate a new question\n!t [answer] - answer question\n!tc - view current question\n!tq [question]:[answer] - add new question to the bot\n!tw - toggle wrong message on/off\n!tl - display leaderboard"
         await message.channel.send(response)
     elif message.content == '!tr':
         setNewQuestion()
