@@ -39,7 +39,7 @@ def QuestionAnswered():
     currentQuestion = ""
 
 def getCurrentQuestion():
-    return currentQuestion
+    return str(currentQuestion)
 
 def getAnswerTo(q):
     return questions[str(q)]
@@ -132,7 +132,7 @@ async def on_message(message):
             return
 
         if message.content[:2] == '!t':
-            if(str(message.content[3:].lower()) == getAnswerTo(getCurrentQuestion()).lower()):
+            if(str(message.content[3:]).lower() == getAnswerTo(getCurrentQuestion()).lower()):
                 response = sender + " got it! :partying_face: :partying_face: :partying_face: "
                 r="✅"
 
