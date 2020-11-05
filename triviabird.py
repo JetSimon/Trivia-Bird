@@ -44,6 +44,12 @@ def getCurrentQuestion():
 def getAnswerTo(q):
     return questions[str(q)]
 
+def DeleteCurrentQuestion(s):
+    global questions
+    del questions[s]
+    with open('questions.json', 'w') as fp:
+        json.dump(questions, fp)
+
 def AddQuestion(q,a):
     global questions
 
@@ -57,12 +63,15 @@ def GetLeaderboard():
     response="  -- LEADERBOARD --\n\n"
     i=0
     for user in sorted(leaderboard, key=leaderboard.get, reverse=True):
+
         if i == 0:
             response += "🥇 "
         elif i == 1:
             response += "🥈 "
         elif i == 2:
             response += "🥉 "
+        else:
+            response += "⚪ "
         response+="**"+str(user)+"**" + " - " + str(leaderboard[str(user)])+"\n\n"
         i+=1
 
@@ -98,7 +107,7 @@ async def on_message(message):
         return
 
     if message.content == '!t help':
-        response = "!tr - generate a new question\n!t [answer] - answer question\n!tc - view current question\n!tq [question]:[answer] - add new question to the bot\n!tw - toggle wrong message on/off\n!tl - display leaderboard\n!th - get hint"
+        response = "!tr - generate a new question\n!t [answer] - answer question\n!tc - view current question\n!tq [question]:[answer] - add new question to the bot\n!tw - toggle wrong message on/off\n!tl - display leaderboard\n!th - get hint\n!tdel - remove current question from pool"
         await message.channel.send(response)
     elif message.content == '!tr':
         setNewQuestion()
@@ -106,6 +115,10 @@ async def on_message(message):
         await message.channel.send(response)
     elif message.content == "!tl":
         await message.channel.send(GetLeaderboard())
+    elif message.content == "!tdel":
+        DeleteCurrentQuestion(getCurrentQuestion())
+        QuestionAnswered()
+        await message.channel.send("Current question deleted!")
     elif message.content == "!th":
         await message.channel.send("HINT: The answer starts with '" + str(getAnswerTo(getCurrentQuestion()))[0] + "'!")
     elif message.content == "!tw":
