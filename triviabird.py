@@ -63,7 +63,7 @@ def GetLeaderboard():
             response += "🥈 "
         elif i == 2:
             response += "🥉 "
-        response+=str(user) + " - " + str(leaderboard[str(user)])+"\n\n"
+        response+="**"+str(user)+"**" + " - " + str(leaderboard[str(user)])+"\n\n"
         i+=1
 
     return response
@@ -98,7 +98,7 @@ async def on_message(message):
         return
 
     if message.content == '!t help':
-        response = "!tr - generate a new question\n!t [answer] - answer question\n!tc - view current question\n!tq [question]:[answer] - add new question to the bot\n!tw - toggle wrong message on/off\n!tl - display leaderboard"
+        response = "!tr - generate a new question\n!t [answer] - answer question\n!tc - view current question\n!tq [question]:[answer] - add new question to the bot\n!tw - toggle wrong message on/off\n!tl - display leaderboard\nth - get hint"
         await message.channel.send(response)
     elif message.content == '!tr':
         setNewQuestion()
@@ -106,6 +106,8 @@ async def on_message(message):
         await message.channel.send(response)
     elif message.content == "!tl":
         await message.channel.send(GetLeaderboard())
+    elif message.content == "!th":
+        await message.channel.send("HINT: The answer starts with '" + str(getAnswerTo(getCurrentQuestion()))[0] + "'!")
     elif message.content == "!tw":
         global tellWhenWrong
         tellWhenWrong = not tellWhenWrong
