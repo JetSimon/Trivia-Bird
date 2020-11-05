@@ -1,13 +1,29 @@
 import os
+import io
+import json
 import random
 import discord
 from dotenv import load_dotenv
 from triviatools import generateQuestions
 
 #number of questions to preload from spreadsheet, set to less if you want to encounter more player added questions
-questions = generateQuestions(500)
 
-leaderboard = {}
+if os.path.isfile('questions.json'):
+    print("questions file found")
+    with open('questions.json', 'r') as fp:
+        questions = json.load(fp)
+else:
+    print("questions file not found")
+    questions = generateQuestions(500)
+
+if os.path.isfile('leaderboard.json'):
+    print("leaderboard file found")
+    with open('leaderboard.json', 'r') as fp:
+        leaderboard = json.load(fp)
+else:
+    leaderboard = {}
+    with open('leaderboard.json', 'w') as fp:
+        json.dump(leaderboard, fp)
 
 tellWhenWrong = True
 
@@ -30,7 +46,12 @@ def getAnswerTo(q):
 
 def AddQuestion(q,a):
     global questions
+
+    
     questions[str(q)] = str(a)
+
+    with open('questions.json', 'w') as fp:
+        json.dump(questions, fp)
 
 def GetLeaderboard():
     response="  -- LEADERBOARD --\n\n"
@@ -105,6 +126,11 @@ async def on_message(message):
 
         print(message.content)
 
+        if message.content == "!tc":
+            response = "The current question is: *" + getCurrentQuestion() + "*"
+            await message.channel.send(response)
+            return
+
         if message.content[:2] == '!t':
             if(str(message.content[3:].lower()) == getAnswerTo(getCurrentQuestion()).lower()):
                 response = sender + " got it! :partying_face: :partying_face: :partying_face: "
@@ -116,6 +142,10 @@ async def on_message(message):
                     leaderboard[sender] = 1
                 else:
                     leaderboard[sender] += 1
+                
+                with open('leaderboard.json', 'w') as fp:
+                    json.dump(leaderboard, fp)
+
                 QuestionAnswered()
             else:
                 if(tellWhenWrong):
@@ -124,9 +154,7 @@ async def on_message(message):
                     
             await message.add_reaction(emoji=r)
             await message.channel.send(response)
-        elif message.content == "!tc":
-            response = "The current question is: *" + getCurrentQuestion() + "*"
-            await message.channel.send(response)
+        
     else:
         if random.randint(0,50) == 25:
             setNewQuestion()

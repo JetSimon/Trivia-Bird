@@ -1,4 +1,9 @@
 import openpyxl
+
+import json
+
+
+
 def generateQuestions(n=1628):
 
     if(n > 1628):
@@ -13,4 +18,7 @@ def generateQuestions(n=1628):
         questions[sheet['D' + str(i)].value] = sheet['E' + str(i)].value
         questions[sheet['G' + str(i)].value] = sheet['H' + str(i)].value
     
+    with open('questions.json', 'w') as fp:
+        json.dump(questions, fp)
+
     return questions
