@@ -7,6 +7,8 @@ from triviatools import generateQuestions
 #number of questions to preload from spreadsheet, set to less if you want to encounter more player added questions
 questions = generateQuestions(500)
 
+leaderboard = {}
+
 tellWhenWrong = True
 
 def setNewQuestion():
@@ -29,6 +31,21 @@ def getAnswerTo(q):
 def AddQuestion(q,a):
     global questions
     questions[str(q)] = str(a)
+
+def GetLeaderboard():
+    response="  -- LEADERBOARD --\n\n"
+    i=0
+    for user in sorted(leaderboard, key=leaderboard.get, reverse=True):
+        if i == 0:
+            response += "🥇 "
+        elif i == 1:
+            response += "🥈 "
+        elif i == 2:
+            response += "🥉 "
+        response+=str(user) + " - " + str(leaderboard[str(user)])+"\n\n"
+        i+=1
+
+    return response
 
 currentQuestion=""
 
@@ -66,6 +83,8 @@ async def on_message(message):
         setNewQuestion()
         response = ":exclamation: TRIVIA: *"+ getCurrentQuestion() + "*" + "\n\n(type !t [answer] to answer)"
         await message.channel.send(response)
+    elif message.content == "!tl":
+        await message.channel.send(GetLeaderboard())
     elif message.content == "!tw":
         global tellWhenWrong
         tellWhenWrong = not tellWhenWrong
@@ -82,7 +101,7 @@ async def on_message(message):
             response = ":warning: Question not set, please check formatting"
         await message.channel.send(response)
     elif(getCurrentQuestion() != ""):
-        sender = message.author.name
+        sender = str(message.author.name)
 
         print(message.content)
 
@@ -90,6 +109,13 @@ async def on_message(message):
             if(str(message.content[3:].lower()) == getAnswerTo(getCurrentQuestion()).lower()):
                 response = sender + " got it! :partying_face: :partying_face: :partying_face: "
                 r="✅"
+
+                global leaderboard
+
+                if(sender not in leaderboard):
+                    leaderboard[sender] = 1
+                else:
+                    leaderboard[sender] += 1
                 QuestionAnswered()
             else:
                 if(tellWhenWrong):
