@@ -42,7 +42,7 @@ def getCurrentQuestion():
     return str(currentQuestion)
 
 def getAnswerTo(q):
-    return questions[str(q)]
+    return str(questions[str(q)])
 
 def DeleteCurrentQuestion(s):
     global questions
