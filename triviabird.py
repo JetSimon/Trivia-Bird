@@ -121,6 +121,8 @@ async def on_message(message):
         await message.channel.send("Current question deleted!")
     elif message.content == "!th":
         await message.channel.send("HINT: The answer starts with '" + str(getAnswerTo(getCurrentQuestion()))[0] + "'!")
+    elif message.content == "!th2":
+        await message.channel.send("HINT: The answer ends with '" + str(getAnswerTo(getCurrentQuestion()))[-1] + "'!")
     elif message.content == "!tw":
         global tellWhenWrong
         tellWhenWrong = not tellWhenWrong
@@ -149,7 +151,7 @@ async def on_message(message):
         if message.content[:2] == '!t':
             response = ""
             if(str(message.content[3:]).lower() == getAnswerTo(getCurrentQuestion()).lower()):
-                response = sender + " got it! :partying_face: :partying_face: :partying_face: "
+                response = sender + " got it! :partying_face: :partying_face: :partying_face:"
                 r="✅"
 
                 global leaderboard
