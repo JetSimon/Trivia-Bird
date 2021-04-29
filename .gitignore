@@ -1,0 +1,9 @@
+
+.env
+.DS_Store
+.~lock.questions.xlsx#
+questions.json
+leaderboard.json
+*.pyc
+*.pyc
+.env
